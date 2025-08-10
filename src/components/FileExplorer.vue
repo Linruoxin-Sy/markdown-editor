@@ -17,7 +17,7 @@
         v-for="file in files"
         :key="file.id"
         :class="{ active: file.id === activeFileId }"
-        @click="activeFileId = file.id"
+        @click="handleSelectFile(file.id)"
       >
         <div class="file-item">
           <input
@@ -43,21 +43,21 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useFileSystem } from '@/composables/useFileSystem'
+import { storeToRefs } from 'pinia'
 import type { MarkdownFile } from '@/types/types'
+import { useFileStore } from '@/stores/files'
 
-const {
-  files,
-  activeFileId,
-  createNewFile,
-  deleteFile,
-  updateFileName,
-  importFromLocal,
-  exportToLocal,
-} = useFileSystem()
+const fileStore = useFileStore()
+const { files, activeFileId } = storeToRefs(fileStore)
+const { setActiveFile, createNewFile, deleteFile, updateFileName, importFromLocal, exportToLocal } =
+  fileStore
 
 const editingFileId = ref<string | null>(null)
 const editingFileName = ref('')
+
+const handleSelectFile = (id: string) => {
+  setActiveFile(id)
+}
 
 const startEditingFileName = (file: MarkdownFile) => {
   editingFileId.value = file.id

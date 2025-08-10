@@ -15,14 +15,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import FileExplorer from '@/components/FileExplorer.vue'
 import MarkdownEditor from '@/components/MarkdownEditor.vue'
 import MarkdownPreview from '@/components/MarkdownPreview.vue'
-import { useFileSystem } from '@/composables/useFileSystem'
 import { useSyncScroll } from '@/composables/useSyncScroll'
+import { useFileStore } from '@/stores/files'
 
-const { activeFile, updateFileContent, createNewFile } = useFileSystem()
+const fileStore = useFileStore()
+const { activeFile } = storeToRefs(fileStore)
+const { updateFileContent, createNewFile } = fileStore
 
 const editorRef = ref<InstanceType<typeof MarkdownEditor> | null>(null)
 const previewRef = ref<InstanceType<typeof MarkdownPreview> | null>(null)
@@ -35,16 +38,6 @@ const content = computed({
     }
   },
 })
-
-// 当活动文件变化时，更新Markdown内容
-watch(
-  () => activeFile.value?.content,
-  (newContent) => {
-    if (newContent !== undefined) {
-      content.value = newContent
-    }
-  },
-)
 
 // 设置滚动同步
 useSyncScroll(
