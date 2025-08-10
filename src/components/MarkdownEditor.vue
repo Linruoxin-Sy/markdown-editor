@@ -38,10 +38,14 @@ watch(
   { immediate: true },
 )
 
-// 保持光标位置
+// 保持光标位置并确保内容正确设置
 onMounted(() => {
   nextTick(() => {
     if (editorRef.value) {
+      // 确保内容正确设置
+      if (props.content && editorRef.value.innerText !== props.content) {
+        editorRef.value.innerText = props.content
+      }
       editorRef.value.focus()
     }
   })
