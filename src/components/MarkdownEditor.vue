@@ -4,7 +4,6 @@
     class="editor"
     contenteditable="true"
     @input="handleInput"
-    @keydown.tab="handleTab"
     spellcheck="false"
   ></div>
 </template>
@@ -26,11 +25,6 @@ const handleInput = () => {
   if (editorRef.value) {
     emit('update:content', editorRef.value.innerText)
   }
-}
-
-const handleTab = (e: KeyboardEvent) => {
-  e.preventDefault()
-  document.execCommand('insertText', false, '  ')
 }
 
 // 同步内容变化到编辑器

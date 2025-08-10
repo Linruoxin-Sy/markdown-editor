@@ -1,19 +1,32 @@
 <template>
-  <div ref="previewRef" class="preview" v-html="htmlContent"></div>
+  <div ref="container" class="preview"></div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { patch } from 'incremental-dom'
+import md from '@/utils/markdown'
 
-defineProps<{
-  htmlContent: string
-}>()
+const container = ref<HTMLElement | null>(null)
 
-const previewRef = ref<HTMLElement | null>(null)
-
-defineExpose({
-  previewRef,
+// 接收 content 属性
+const props = defineProps({
+  content: {
+    type: String,
+    required: true,
+  },
 })
+
+function render() {
+  if (!container.value) return
+
+  const func = md.renderToIncrementalDOM(props.content)
+
+  patch(container.value as HTMLElement, func)
+}
+
+watch(() => props.content, render, { immediate: true })
+onMounted(render)
 </script>
 
 <style scoped>

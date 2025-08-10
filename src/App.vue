@@ -3,8 +3,8 @@
     <FileExplorer />
 
     <div class="editor-container" v-if="activeFile">
-      <Editor v-model:content="content" ref="editorRef" />
-      <Preview :html-content="htmlContent" ref="previewRef" />
+      <MarkdownEditor v-model:content="content" ref="editorRef" />
+      <MarkdownPreview :content="content" ref="previewRef" />
     </div>
 
     <div v-else class="empty-state">
@@ -17,16 +17,15 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import FileExplorer from '@/components/FileExplorer.vue'
-import Editor from '@/components/MarkdownEditor.vue'
-import Preview from '@/components/MarkdownPreview.vue'
+import MarkdownEditor from '@/components/MarkdownEditor.vue'
+import MarkdownPreview from '@/components/MarkdownPreview.vue'
 import { useFileSystem } from '@/composables/useFileSystem'
-import { useMarkdown } from '@/composables/useMarkdown'
 import { useSyncScroll } from '@/composables/useSyncScroll'
 
 const { activeFile, updateFileContent, createNewFile } = useFileSystem()
 
-const editorRef = ref<InstanceType<typeof Editor> | null>(null)
-const previewRef = ref<InstanceType<typeof Preview> | null>(null)
+const editorRef = ref<InstanceType<typeof MarkdownEditor> | null>(null)
+const previewRef = ref<InstanceType<typeof MarkdownPreview> | null>(null)
 
 const content = computed({
   get: () => activeFile.value?.content || '',
@@ -36,8 +35,6 @@ const content = computed({
     }
   },
 })
-
-const { htmlContent } = useMarkdown(content.value)
 
 // 当活动文件变化时，更新Markdown内容
 watch(

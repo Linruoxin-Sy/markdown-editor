@@ -4,24 +4,27 @@ export function useSyncScroll(
   editorRef: Ref<HTMLElement | null>,
   previewRef: Ref<HTMLElement | null>,
 ) {
-  let isUserScroll = true
+  let isScroll = false
 
   const syncScroll = (source: HTMLElement, target: HTMLElement) => {
-    if (!isUserScroll) return
+    if (isScroll) return
 
-    isUserScroll = false
+    isScroll = true
 
-    const sourceScrollRatio = source.scrollTop / (source.scrollHeight - source.clientHeight)
-    const targetScrollTop = sourceScrollRatio * (target.scrollHeight - target.clientHeight)
+    const sourceScrollRatio = source.scrollTop / Math.max(source.scrollHeight - source.clientHeight, 1)
+    const targetScrollTop = sourceScrollRatio * Math.max(target.scrollHeight - target.clientHeight, 0)
 
     target.scrollTo({
       top: targetScrollTop,
-      behavior: 'auto',
+      behavior: 'smooth',
     })
 
-    setTimeout(() => {
-      isUserScroll = true
-    }, 100)
+    const done = () => {
+      isScroll = false
+      target.removeEventListener('scrollend', done)
+    }
+
+    target.addEventListener('scrollend', done)
   }
 
   const onEditorScroll = () => {
@@ -36,8 +39,8 @@ export function useSyncScroll(
 
   onMounted(() => {
     if (editorRef.value && previewRef.value) {
-      editorRef.value.addEventListener('scroll', onEditorScroll)
-      previewRef.value.addEventListener('scroll', onPreviewScroll)
+      editorRef.value.addEventListener('scrollend', onEditorScroll)
+      previewRef.value.addEventListener('scrollend', onPreviewScroll)
     }
   })
 
