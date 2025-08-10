@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import type { MarkdownFile } from '@/types'
+import type { MarkdownFile } from '@/types/types'
 
 export function useFileSystem() {
   const files = ref<MarkdownFile[]>([])

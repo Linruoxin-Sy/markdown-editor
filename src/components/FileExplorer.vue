@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useFileSystem } from '@/composables/useFileSystem'
-import type { MarkdownFile } from '@/types'
+import type { MarkdownFile } from '@/types/types'
 
 const {
   files,
@@ -53,7 +53,7 @@ const {
   deleteFile,
   updateFileName,
   importFromLocal,
-  exportToLocal
+  exportToLocal,
 } = useFileSystem()
 
 const editingFileId = ref<string | null>(null)
@@ -100,7 +100,8 @@ const exportFile = (id: string) => {
   gap: 10px;
 }
 
-.toolbar button, .import-btn {
+.toolbar button,
+.import-btn {
   padding: 5px 10px;
   background: #f0f0f0;
   border: 1px solid #ccc;
