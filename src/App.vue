@@ -17,8 +17,8 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import FileExplorer from '@/components/FileExplorer.vue'
-import Editor from '@/components/Editor.vue'
-import Preview from '@/components/Preview.vue'
+import Editor from '@/components/MarkdownEditor.vue'
+import Preview from '@/components/MarkdownPreview.vue'
 import { useFileSystem } from '@/composables/useFileSystem'
 import { useMarkdown } from '@/composables/useMarkdown'
 import { useSyncScroll } from '@/composables/useSyncScroll'

@@ -42,8 +42,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useFileSystem } from '@/composables/useFileSystem'
+import type { MarkdownFile } from '@/types'
 
 const {
   files,
@@ -58,7 +59,7 @@ const {
 const editingFileId = ref<string | null>(null)
 const editingFileName = ref('')
 
-const startEditingFileName = (file: any) => {
+const startEditingFileName = (file: MarkdownFile) => {
   editingFileId.value = file.id
   editingFileName.value = file.name
 }

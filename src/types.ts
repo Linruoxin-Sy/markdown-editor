@@ -5,3 +5,4 @@ export interface MarkdownFile {
   createdAt: number
   updatedAt: number
 }
+
