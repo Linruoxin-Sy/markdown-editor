@@ -21,6 +21,7 @@
       >
         <div class="file-item">
           <input
+            class="file-name-input"
             v-if="editingFileId === file.id"
             v-model="editingFileName"
             @blur="handleFileNameBlur(file.id)"
@@ -28,7 +29,7 @@
             @click.stop
             autofocus
           />
-          <span v-else @dblclick="startEditingFileName(file)">
+          <span class="file-name" v-else @dblclick="startEditingFileName(file)">
             {{ file.name }}
           </span>
           <div class="actions">
@@ -91,6 +92,7 @@ const exportFile = (id: string) => {
   border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .toolbar {
@@ -133,14 +135,22 @@ const exportFile = (id: string) => {
   align-items: center;
 }
 
-.file-item input {
+.file-item .file-name-input {
+  font-size: 16px;
   width: 100%;
-  padding: 2px 5px;
+  background-color: initial;
+  border: none;
+  outline: none;
+}
+
+.file-item .file-name {
+  font-size: 16px;
 }
 
 .actions {
   display: flex;
   gap: 5px;
+  flex-shrink: 0;
 }
 
 .actions button {

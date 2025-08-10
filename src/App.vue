@@ -9,7 +9,7 @@
 
     <div v-else class="empty-state">
       <p>没有可编辑的文件，请创建一个新文件</p>
-      <button @click="createNewFile">新建文件</button>
+      <button class="create-file-btn" @click="createNewFile">新建文件</button>
     </div>
   </div>
 </template>
@@ -83,5 +83,13 @@ body {
   justify-content: center;
   align-items: center;
   gap: 20px;
+}
+
+.create-file-btn {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>
